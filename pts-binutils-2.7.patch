@@ -1,0 +1,113 @@
+--- binutils-2.7/gas/write.c.orig	1996-07-04 18:13:21.000000000 +0200
++++ binutils-2.7/gas/write.c	2024-03-31 03:22:27.846473785 +0200
+@@ -25,6 +25,8 @@
+ #include "obstack.h"
+ #include "output-file.h"
+ 
++extern const int md_relax_table[];
++
+ /* This looks like a good idea.  Let's try turning it on always, for now.  */
+ #undef  BFD_FAST_SECTION_FILL
+ #define BFD_FAST_SECTION_FILL
+--- binutils-2.7/gas/config/tc-i386.c.orig	1996-07-04 18:14:04.000000000 +0200
++++ binutils-2.7/gas/config/tc-i386.c	2024-03-31 03:31:42.182222154 +0200
+@@ -175,7 +175,7 @@
+ 
+ static int flag_do_long_jump;	/* FIXME what does this do? */
+ 
+-static int flag_16bit_code;	/* 1 if we're writing 16-bit code, 0 if 32-bit */
++int flag_16bit_code;	/* 1 if we're writing 16-bit code, 0 if 32-bit */
+ 
+ /* Interface to relax_segment.
+    There are 2 relax states for 386 jump insns: one for conditional &
+--- binutils-2.7/gas/config/tc-i386.h.orig	1996-07-04 18:14:05.000000000 +0200
++++ binutils-2.7/gas/config/tc-i386.h	2024-03-31 03:32:22.413798545 +0200
+@@ -371,7 +371,9 @@
+ 
+ #define md_operand(x)
+ 
++#if 0
+ extern const struct relax_type md_relax_table[];
++#endif
+ #define TC_GENERIC_RELAX_TABLE md_relax_table
+ 
+ 
+--- binutils-2.7/binutils/arsup.c.orig	1996-07-08 21:32:17.000000000 +0200
++++ binutils-2.7/binutils/arsup.c	2024-03-31 03:19:51.390139407 +0200
+@@ -38,7 +38,9 @@
+ 
+ extern int verbose;
+ 
++#if 0
+ extern char *strdup();
++#endif
+ 
+ static void
+ map_over_list (arch, function, list)
+--- binutils-2.7/ld/mri.c.orig	1996-07-04 18:24:44.000000000 +0200
++++ binutils-2.7/ld/mri.c	2024-03-31 03:22:51.873981651 +0200
+@@ -54,7 +54,9 @@
+ struct section_name_struct *alignment;
+ struct section_name_struct *subalignment;
+ 
++#if 0
+ extern char *strdup();
++#endif
+ 
+ static struct section_name_struct **lookup
+   PARAMS ((const char *name, struct section_name_struct **list));
+--- binutils-2.7/libiberty/cplus-dem.c.orig	1996-07-04 18:16:36.000000000 +0200
++++ binutils-2.7/libiberty/cplus-dem.c	2024-03-31 03:20:30.857132161 +0200
+@@ -28,6 +28,7 @@
+ #include <ctype.h>
+ #include <string.h>
+ #include <stdio.h>
++#include <stdlib.h>
+ 
+ #include <demangle.h>
+ #undef CURRENT_DEMANGLING_STYLE
+@@ -3017,8 +3018,10 @@
+   exit (1);
+ }
+ 
++#if 0
+ char * malloc ();
+ char * realloc ();
++#endif
+ 
+ char *
+ xmalloc (size)
+--- binutils-2.7/libiberty/strerror.c.orig	1996-07-04 18:16:41.000000000 +0200
++++ binutils-2.7/libiberty/strerror.c	2024-03-31 03:19:00.599529348 +0200
+@@ -23,6 +23,9 @@
+ #undef sys_errlist
+ #endif
+ 
++#define sys_errlist my_sys_errlist
++#define sys_nerr my_sys_nerr
++
+ /*  Routines imported from standard C runtime libraries. */
+ 
+ #ifdef __STDC__
+--- binutils-2.7/libiberty/vasprintf.c.orig	1996-07-04 18:16:42.000000000 +0200
++++ binutils-2.7/libiberty/vasprintf.c	2024-03-31 03:19:25.610831144 +0200
+@@ -31,8 +31,10 @@
+ int global_total_width;
+ #endif
+ 
++#if 0
+ unsigned long strtoul ();
+ char *malloc ();
++#endif
+ 
+ static int
+ int_vasprintf (result, format, args)
+--- binutils-2.7/config.guess.orig	1996-07-04 18:21:56.000000000 +0200
++++ binutils-2.7/config.guess	2024-03-31 03:17:51.729600994 +0200
+@@ -1,4 +1,6 @@
+ #! /bin/sh
++echo i386-unknown-linux
++exit
+ # Attempt to guess a canonical system name.
+ #   Copyright (C) 1992, 93, 94, 95, 1996 Free Software Foundation, Inc.
+ #
